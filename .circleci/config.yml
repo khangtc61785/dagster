@@ -22,7 +22,7 @@ jobs:
       - run:
           name: Push Docker image
           command: |
-            docker push ${DOCKERHUB_USER}/dagster:test .
+            docker push ${DOCKERHUB_USER}/dagster:test
 workflows:
   version: 2
   build-and-release:
