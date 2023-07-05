@@ -13,6 +13,7 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
+            docker buildx build --help
             echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USER" --password-stdin          
             docker buildx build --push \
               -f DockerfileCore \
