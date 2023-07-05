@@ -1,7 +1,6 @@
 version: 2
 jobs:
   build:
-    working_directory: /app
     docker:
       - image: docker:18.05.0-ce-git
     auth:
@@ -17,6 +16,7 @@ jobs:
             docker build --cache-from=dagster \
               -f DockerfileCore \
               --build-arg BASE_IMAGE=python:3.9.2-slim --build-arg DAGSTER_VERSION=1.1.6 \
+              --platform linux/amd64,linux/arm64
               -t ${DOCKERHUB_USER}/dagster:test .
       - run:
           name: Push Docker image
