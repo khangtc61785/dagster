@@ -4,14 +4,12 @@ jobs:
     working_directory: /app
     docker:
       - image: docker:17.05.0-ce-git
+    auth:
+      username: ${DOCKERHUB_USER}
+      password: ${DOCKERHUB_TOKEN}
     steps:
       - checkout
       - setup_remote_docker
-      - restore_cache:
-          keys:
-            - v1-{{ .Branch }}
-          paths:
-            - /caches/app.tar
       - run:
           name: Load Docker image layer cache
           command: |
@@ -20,12 +18,11 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            docker build --cache-from=dagster -f DockerfileCore --build-arg BASE_IMAGE=python:3.9.2-slim --build-arg DAGSTER_VERSION=1.1.6 -t dagster:lastest .
+            docker build --cache-from=dagster -f DockerfileCore --build-arg BASE_IMAGE=python:3.9.2-slim --build-arg DAGSTER_VERSION=1.1.6 -t dagster:test .
       - run:
-          name: Save Docker image layer cache
+          name: Push Docker image
           command: |
-            mkdir -p /caches
-            docker save -o /caches/app.tar app
+            docker push ${DOCKERHUB_USER}/dagster:test .
 workflows:
   version: 2
   build-and-release:
