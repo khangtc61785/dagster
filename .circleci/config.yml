@@ -13,7 +13,8 @@ jobs:
       - run:
           name: Build application Docker image
           command: |
-            docker buildx build \
+            echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USER" --password-stdin          
+            docker buildx build --push \
               -f DockerfileCore \
               --build-arg BASE_IMAGE=python:3.9.2-slim --build-arg DAGSTER_VERSION=1.1.6 \
               --platform linux/amd64,linux/arm64 \
@@ -22,8 +23,6 @@ jobs:
           name: Push Docker image
           command: |
             docker login --help
-            echo "$DOCKERHUB_TOKEN" | docker login -u "$DOCKERHUB_USER" --password-stdin
-            docker push ${DOCKERHUB_USER}/dagster:test
 workflows:
   version: 2
   build-and-release:
