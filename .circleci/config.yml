@@ -30,7 +30,7 @@ workflows:
   version: 2
   build-and-release:
     jobs:
-      - Build:
+      - build:
           filters:
             tags:
               only: /^v.*/
