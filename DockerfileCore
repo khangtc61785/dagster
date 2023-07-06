@@ -15,4 +15,5 @@ RUN pip install \
     dagster-celery-k8s \
     dagster-gcp \
     dagster-graphql \
-    dagit
+    dagit && \
+    pip install --force-reinstall 'sqlalchemy<2.0.0'
